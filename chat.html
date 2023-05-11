@@ -7,7 +7,7 @@
 <body>
     <!-- Output Messages -->
     <div>
-        
+
     </div>
     <!-- Add Name and Message and Send -->
     <form action="">
@@ -19,5 +19,22 @@
 
         <input type="submit" value="Send">
     </form>
+
+    <!-- Client WebSocket Connection-->
+    <script>
+        var socket;
+
+        window.onload = function() {
+            //Verbindung oeffnen
+            socket = new WebSocket("ws://localhost:3000");
+            //sobald Verbindung geoeffnet ist, sendet Client Init-Nachricht an Server
+            socket.onopen = function() {
+                //chatId aus URL lesen
+                var chatId = window.location.pathname.match(/\w{7}/)[0]; //RegEx
+                initChatJSON = JSON.stringify({type: "init", chatId: chatId});
+                socket.send(initChatJSON);
+            }
+        }
+    </script>
 </body>
 </html>
